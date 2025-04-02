@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding-top: 2rem; }
+        .form-group { margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4 text-center">Heart Disease Risk Assessment</h1>
+        
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <form id="predictionForm">
+                            <div class="form-group">
+                                <label for="age">Age</label>
+                                <input type="number" class="form-control" id="age" name="age" min="20" max="80" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                <input type="number" id="age" name="age" required min="20" max="80" placeholder="20-80 years">
+            </div>
+            
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="chestpain">Chest Pain Type:</label>
+                <select id="chestpain" name="chestpain" required>
+                    <option value="">Select Chest Pain Type</option>
+                    <option value="1">Typical Angina</option>
+                    <option value="2">Atypical Angina</option>
+                    <option value="3">Non-anginal Pain</option>
+                    <option value="0">Asymptomatic</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="trestbps">Resting Blood Pressure (mm Hg):</label>
+                <input type="number" id="trestbps" name="trestbps" required min="94" max="200" placeholder="94-200 mm Hg">
+            </div>
+            
+            <div class="form-group">
+                <label for="chol">Serum Cholesterol (mg/dl):</label>
+                <input type="number" id="chol" name="chol" required min="0" max="602" placeholder="0-602 mg/dl">
+            </div>
+            
+            <div class="form-group">
+                <label for="fbs">Fasting Blood Sugar > 120 mg/dl:</label>
+                <select id="fastingbloodsugar" name="fbs" required>
+                    <option value="">Select Option</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="restecg">Resting Electrocardiographic Results:</label>
+                <select id="restingrelectro" name="restecg" required>
+                    <option value="">Select Result</option>
+                    <option value="0">Normal</option>
+                    <option value="1">ST-T Wave Abnormality</option>
+                    <option value="2">Left Ventricular Hypertrophy</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="thalach">Maximum Heart Rate Achieved:</label>
+                <input type="number" id="thalach" name="thalach" required min="71" max="202" placeholder="71-202 bpm">
+            </div>
+            
+            <div class="form-group">
+                <label for="exang">Exercise Induced Angina:</label>
+                <select id="exerciseangia" name="exang" required>
+                    <option value="">Select Option</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="oldpeak">ST Depression Induced by Exercise:</label>
+                <input type="number" id="oldpeak" name="oldpeak" step="0.1" required min="0" max="6.2" placeholder="0-6.2">
+            </div>
+            
+            <div class="form-group">
+                <label for="slope">Slope of the Peak Exercise ST Segment:</label>
+                <select id="slope" name="slope" required>
+                    <option value="">Select Slope</option>
+                    <option value="0">Upsloping</option>
+                    <option value="1">Flat</option>
+                    <option value="2">Downsloping</option>
+                    <option value="3">Severe Downsloping</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="ca">Number of Major Vessels Colored by Fluoroscopy:</label>
+                <select id="noofmajorvessels" name="ca" required>
+                    <option value="">Select Number</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+            
+            <button type="submit">Predict Heart Disease Risk</button>
+        </form>
+        
+        <div id="result" class="hidden">
+            <h2>Prediction Result</h2>
+            <p id="result-message"></p>
+            <p id="result-probability"></p>
+            <div id="patient-info"></div>
+            
+            <!-- Risk interpretation with confidence score -->
+            <div id="risk-interpretation" class="risk-interpretation">
+                <!-- Will be populated by JavaScript -->
+            </div>
+            
+            <!-- Risk meter visualization -->
+            <div id="risk-visualizer" class="risk-meter">
+                <h3>Risk Meter</h3>
+                <div class="meter-container">
+                    <div id="risk-level" class="risk-indicator"></div>
+                    <!-- Pointer will be added by JavaScript -->
+                </div>
+                
+                <div class="risk-labels">
+                    <span>Low Risk (0-30%)</span>
+                    <span>Moderate Risk (30-70%)</span>
+                    <span>High Risk (70-100%)</span>
+                </div>
+            </div>
+            
+            <!-- Contributing factors section -->
+            <div class="contributing-factors">
+                <h3>Key Contributing Factors</h3>
+                <div id="factors-list">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Comparison with average -->
+            <div class="comparison-chart">
+                <h3>Risk Comparison</h3>
+                <div class="comparison-container">
+                    <div id="user-risk-bar" class="comparison-bar user" style="width: 0%;"></div>
+                    <div id="average-risk-bar" class="comparison-bar average" style="width: 0%;"></div>
+                </div>
+                <div class="comparison-labels">
+                    <span class="comparison-label user">Your Risk</span>
+                    <span class="comparison-label average">Average for Your Age Group</span>
+                </div>
+            </div>
+            
+            <!-- Recommendations -->
+            <div id="recommendations" class="recommendations-panel">
+                <h3>Personalized Recommendations</h3>
+                <div id="lifestyle-changes"></div>
+                <div id="monitoring-steps"></div>
+                <div id="medical-advice"></div>
+            </div>
+            
+            <!-- Emergency warning (only shown for high risk) -->
+            <div id="emergency-warning" class="emergency-warning hidden">
+                <strong>WARNING:</strong> Seek medical attention immediately if you experience chest pain, shortness of breath, or dizziness. These could be signs of a serious heart condition.
+            </div>
+            
+            <!-- Resource links -->
+            <div class="resource-links">
+                <h3>Helpful Resources</h3>
+                <div class="resources-list">
+                    <div class="resource-item">
+                        <div class="resource-title">American Heart Association</div>
+                        <div class="resource-description">Expert guidance on heart health and disease prevention.</div>
+                        <a href="https://www.heart.org/" class="resource-link" target="_blank">Visit Website</a>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-title">World Health Organization</div>
+                        <div class="resource-description">Global health information and recommendations.</div>
+                        <a href="https://www.who.int/health-topics/cardiovascular-diseases" class="resource-link" target="_blank">Visit Website</a>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-title">Heart-Healthy Diet Guide</div>
+                        <div class="resource-description">Dietary guidelines for maintaining heart health.</div>
+                        <a href="https://www.heart.org/en/healthy-living/healthy-eating" class="resource-link" target="_blank">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action buttons -->
+            <div class="action-buttons">
+                <button id="print-button" class="action-button">Download Results as PDF</button>
+                <button id="email-button" class="action-button">Email Results to Doctor</button>
+                <button id="reminder-button" class="action-button primary">Set 6-Month Reminder</button>
+            </div>
+            
+            <!-- Disclaimer -->
+            <div class="disclaimer">
+                <strong>Disclaimer:</strong> This tool is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
+            </div>
+            
+            <!-- Feedback section -->
+            <div class="feedback-section">
+                <div class="feedback-question">Was this prediction helpful?</div>
+                <div class="feedback-buttons">
+                    <button class="feedback-button" data-value="yes">Yes</button>
+                    <button class="feedback-button" data-value="somewhat">Somewhat</button>
+                    <button class="feedback-button" data-value="no">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Email modal -->
+    <div id="email-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Email Results to Doctor</h3>
+            <div class="form-group">
+                <label for="doctor-email">Doctor's Email:</label>
+                <input type="email" id="doctor-email" placeholder="doctor@example.com" value="s.f.meisser87@gmail.com" required>
+                <small class="helper-text">Default: Dr. Meisser (s.f.meisser87@gmail.com)</small>
+            </div>
+            <div class="form-group">
+                <label for="user-message">Message (Optional):</label>
+                <textarea id="user-message" rows="3" placeholder="Include any additional information for your doctor"></textarea>
+            </div>
+            <button id="send-email" class="action-button primary">Send Email</button>
+        </div>
+    </div>
+    
+    <!-- Reminder modal -->
+    <div id="reminder-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Set Follow-up Reminder</h3>
+            <div class="form-group">
+                <label for="reminder-email">Your Email:</label>
+                <input type="email" id="reminder-email" placeholder="you@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="reminder-date">Reminder Date:</label>
+                <input type="date" id="reminder-date" required>
+            </div>
+            <button id="set-reminder" class="action-button primary">Set Reminder</button>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
